@@ -1,0 +1,91 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# THE ICP RUBRIC
+#
+# This file is the whole point of the project. Everything else is plumbing.
+# You are encoding *your* judgment about what a good-fit account looks like,
+# in a form a machine can apply consistently to ten thousand companies.
+#
+# Edit this freely. When you change it, the cache invalidates automatically
+# (scores are keyed by a fingerprint of this file), so you can A/B rubrics.
+# ─────────────────────────────────────────────────────────────────────────────
+
+name: "B2B SaaS, 50-500 employees, sells to revenue teams, runs outbound"
+
+description: >
+  We sell tooling to sales and marketing organisations. Our best customers are
+  software companies past product-market fit but before enterprise bureaucracy:
+  they have a real outbound motion, a named RevOps or GTM function, and enough
+  headcount that manual processes have started to hurt. Companies that grow
+  purely through product-led self-serve are a poor fit even when they are large,
+  because there is no sales team to sell into.
+
+# Each dimension is scored 0-3 by the model, and must be justified with a
+# verbatim quote from the company's own website. No quote, no points.
+dimensions:
+  - key: segment
+    weight: 1.0
+    question: >
+      Is this a B2B software or tech-enabled services company whose customers
+      are other businesses?
+    guidance:
+      "3": "Clearly B2B software. Sells a product to other companies."
+      "2": "B2B, but services-led or a hybrid rather than pure software."
+      "1": "Mixed B2B/B2C, or the buyer is ambiguous."
+      "0": "Consumer, non-profit, government, or not a company at all."
+
+  - key: size_signal
+    weight: 1.0
+    question: >
+      Does the site suggest roughly 50-500 employees? Look for team pages,
+      office counts, customer logos, funding stage language, or the number and
+      seniority of open roles.
+    guidance:
+      "3": "Strong evidence of 50-500: Series A-C language, sizeable team page, several open roles."
+      "2": "Plausibly in range but the evidence is indirect."
+      "1": "Looks clearly smaller (under ~20) or clearly larger (enterprise, thousands of staff)."
+      "0": "No usable size signal anywhere on the site."
+
+  - key: gtm_motion
+    weight: 1.5   # weighted higher: this is the dimension that actually predicts fit
+    question: >
+      Is there evidence of a human sales motion - outbound, SDRs, AEs, a
+      "Book a demo" or "Talk to sales" path, or open sales roles?
+    guidance:
+      "3": "Explicit sales motion: sales roles open, 'Talk to sales' as the primary CTA, or a named sales team."
+      "2": "Some sales motion, but self-serve signup is the main path."
+      "1": "Almost entirely product-led. Pricing page ends in 'Sign up free'."
+      "0": "No discernible sales motion at all."
+
+  - key: buying_trigger
+    weight: 1.0
+    question: >
+      Is there a live trigger suggesting they are building or scaling revenue
+      operations right now? Recent funding, hiring for RevOps/GTM/Sales Ops,
+      a new sales leader, or expansion into a new market.
+    guidance:
+      "3": "Explicit, dated trigger: an open RevOps/GTM role, a funding announcement, a new CRO."
+      "2": "A softer trigger: general sales hiring, a new region, a new product line."
+      "1": "Nothing current, but the company is clearly active."
+      "0": "Site looks dormant or unmaintained."
+
+  - key: geography
+    weight: 0.5   # weighted low: nice to have, rarely the deciding factor
+    question: >
+      Is the company headquartered in or selling primarily to North America,
+      the UK, or Western Europe?
+    guidance:
+      "3": "Clearly HQ'd or primarily selling in those markets."
+      "2": "Global with meaningful presence in those markets."
+      "1": "Primarily elsewhere but some presence."
+      "0": "No presence in target markets."
+
+# Weighted total is normalised to 0-100 before tiering, so you can reweight
+# dimensions without re-tuning these numbers.
+tiers:
+  a_min: 75   # work it now
+  b_min: 55   # nurture
+  # anything below b_min is Tier C - do not spend a rep's time on it
+
+# The score at or above which we call the account "fit" when scoring the
+# eval set. Keep this equal to b_min unless you have a reason not to.
+fit_threshold: 55

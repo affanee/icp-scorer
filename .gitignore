@@ -1,0 +1,17 @@
+# Secrets. Never, ever commit this file.
+.env
+
+# Caches produced by running the scorer
+.cache/
+out/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+*.egg-info/
+
+# OS
+.DS_Store

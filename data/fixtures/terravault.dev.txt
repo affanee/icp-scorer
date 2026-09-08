@@ -1,0 +1,11 @@
+--- PAGE: / ---
+TerraVault. Open source object storage for developers. Self-host in one command. TerraVault is an Apache 2.0 licensed storage layer that runs anywhere you can run a container. Read the docs. Star us on GitHub. 31,000 stars and counting.
+
+--- PAGE: /about ---
+About the project. TerraVault began as a weekend project in Berlin in 2023 and is now maintained by a core team of 11 engineers and more than 400 community contributors. The project is funded by a foundation grant and by sponsorships. We are engineers building for engineers.
+
+--- PAGE: /careers ---
+Contribute. We do not currently have open employment positions. The best way to join the project is to pick up a good first issue on our GitHub tracker and open a pull request. Community discussion happens in our Discord.
+
+--- PAGE: /pricing ---
+Pricing. TerraVault is free and always will be. Our optional managed cloud starts at 20 dollars a month with usage based billing. Sign up with your GitHub account and deploy in under two minutes.

@@ -1,0 +1,35 @@
+domain,label,note
+gong.io,fit,Revenue intelligence sold to sales orgs. Textbook.
+clay.com,fit,GTM data tooling with a loud outbound motion.
+apollo.io,fit,Sales engagement. Sells to exactly our buyer.
+salesloft.com,fit,Sales engagement platform, clear enterprise sales motion.
+clari.com,fit,Revenue operations platform.
+outreach.io,fit,Larger than ideal but the buyer is dead centre.
+close.com,fit,CRM for SMB sales teams.
+attio.com,fit,Modern CRM. Sales-led with a demo path.
+chilipiper.com,fit,Scheduling and routing for revenue teams.
+amplemarket.com,fit,AI sales platform.
+smartlead.ai,fit,Cold email infrastructure. Buyer is outbound teams.
+instantly.ai,fit,Same buyer as smartlead.
+warmly.ai,fit,Signal-based outbound. Very close to our ICP.
+lavender.ai,fit,Smaller than the range but the buyer is right.
+pocus.com,fit,Product-led sales signals. Sells to revenue teams.
+vitally.io,fit,Customer success platform - revenue-adjacent buyer.
+dealhub.io,fit,CPQ for sales orgs.
+demandbase.com,fit,ABM platform sold to marketing and sales.
+notion.so,not_fit,Horizontal PLG. No outbound motion to sell into.
+figma.com,not_fit,Design tool. Wrong buyer entirely.
+stripe.com,not_fit,Developer-first payments and far too large.
+shopify.com,not_fit,Commerce platform. Wrong buyer and enormous.
+vercel.com,not_fit,Developer infrastructure. PLG.
+linear.app,not_fit,PLG project management for engineering.
+calendly.com,not_fit,PLG self-serve. Scheduling is not a revenue team purchase.
+basecamp.com,not_fit,Deliberately small and anti-sales.
+canva.com,not_fit,Prosumer design. Wrong segment.
+duolingo.com,not_fit,Consumer education.
+github.com,not_fit,Developer platform owned by Microsoft.
+1password.com,not_fit,Security tool. IT buyer, largely self-serve.
+mailchimp.com,not_fit,SMB marketing owned by Intuit. Too big, wrong motion.
+redhat.com,not_fit,Enterprise open source. Wrong size and buyer.
+airbnb.com,not_fit,Consumer marketplace.
+wikipedia.org,not_fit,Not a company. Sanity check row - the scorer should hate this.

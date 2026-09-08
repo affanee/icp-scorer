@@ -1,0 +1,11 @@
+--- PAGE: / ---
+Cadence RevOps. Configure, price and quote software for growing B2B sales teams. Stop losing deals to a broken approval process. Cadence RevOps turns your pricing rules into guardrails your reps cannot break, and pushes an approved quote into your CRM in under a minute. Book a demo.
+
+--- PAGE: /about ---
+Our story. Cadence RevOps started in Austin in 2022. We are 88 people today, spread across Austin and Toronto. We serve business to business software companies in North America and the United Kingdom, typically those with 30 to 200 employees who have outgrown quoting in a spreadsheet.
+
+--- PAGE: /careers ---
+Working at Cadence. Current openings: Sales Operations Lead, Austin. Enterprise Account Executive, Austin. Solutions Consultant, remote. Revenue Operations Manager, Toronto. We are hiring a Sales Operations Lead to own our own internal go-to-market systems as we scale.
+
+--- PAGE: /pricing ---
+Plans. Cadence RevOps is sold as an annual subscription based on the number of quoting users. Talk to sales for pricing. Implementation is included on all annual plans.

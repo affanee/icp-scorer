@@ -1,0 +1,11 @@
+--- PAGE: / ---
+PixelForge. Beautiful designs in seconds, for everyone. Make posters, invitations, social posts and birthday cards without any design experience. Thousands of free templates. Drag, drop, done. Join 4 million creators. Sign up free. No credit card required.
+
+--- PAGE: /about ---
+About PixelForge. We believe design should be for everybody, not just professionals. PixelForge was started in 2024 by a small team who wanted to make creative tools that a fourteen year old and a grandmother could both use. We are a remote team of 22 people. We have never taken outside investment and we are profitable.
+
+--- PAGE: /careers ---
+Work with us. We hire slowly and rarely. Current openings: Senior Frontend Engineer, remote. Community Manager, remote. Illustrator, contract. We do not have a sales team and we do not plan to build one.
+
+--- PAGE: /pricing ---
+Pricing. Free forever for personal use. PixelForge Plus is 8 dollars a month, billed monthly, cancel any time. Upgrade in one click from inside the app. No calls, no demos, no contracts.

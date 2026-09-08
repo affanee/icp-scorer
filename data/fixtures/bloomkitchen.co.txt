@@ -1,0 +1,11 @@
+--- PAGE: / ---
+Bloom Kitchen. Fresh ingredients and easy recipes delivered to your door every week. Choose your meals, we deliver on Sunday, you cook in thirty minutes. Skip any week. Cancel any time. Get 40 percent off your first box.
+
+--- PAGE: /about ---
+Our story. Bloom Kitchen was started by a home cook who was tired of throwing away half a bunch of coriander every week. We deliver to households across three cities. We are a team of 45 people, most of whom work in our two kitchens and on our delivery fleet.
+
+--- PAGE: /careers ---
+Join the Bloom Kitchen team. We are hiring: Delivery Driver, part time. Kitchen Assistant. Warehouse Supervisor, night shift. Customer Care Associate. All roles are onsite.
+
+--- PAGE: /pricing ---
+Boxes and pricing. Two person box from 9 dollars per serving. Family box from 7 dollars per serving. Weekly subscription, no commitment, manage everything in your account. Start your box today.

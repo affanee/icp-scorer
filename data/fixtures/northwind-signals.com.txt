@@ -1,0 +1,11 @@
+--- PAGE: / ---
+Northwind Signals. Revenue intelligence for B2B sales teams. Northwind Signals records, transcribes and analyses every customer conversation so revenue leaders can see what is actually happening in their pipeline. Our platform surfaces risk on open deals, tracks competitor mentions across calls, and tells managers which coaching moment matters this week. Trusted by more than 340 B2B software companies across North America and Europe. Book a demo with our sales team. Talk to sales about enterprise deployment.
+
+--- PAGE: /about ---
+About Northwind Signals. We were founded in 2021 by two former sales operations leaders who were tired of forecasting from a spreadsheet. We are a team of 140 people across San Francisco, Denver and London. In March 2026 we closed a 42 million dollar Series B led by Fernbrook Ventures to expand our go-to-market organisation. Our customers are mid-market software companies with revenue teams between 20 and 300 people.
+
+--- PAGE: /careers ---
+Careers at Northwind Signals. We are hiring across go-to-market. Open roles: Revenue Operations Manager, San Francisco. Enterprise Account Executive, London. Sales Development Representative, Denver. Manager of Sales Development, San Francisco. GTM Engineer, remote. Director of Revenue Operations, San Francisco. We are building our outbound motion from the ground up and want operators who can build the system, not just run it.
+
+--- PAGE: /pricing ---
+Pricing. Northwind Signals is priced per seat with an annual contract. Growth and Enterprise tiers include dedicated onboarding and a named customer success manager. Contact sales for a quote. All plans require a conversation with our sales team before provisioning.

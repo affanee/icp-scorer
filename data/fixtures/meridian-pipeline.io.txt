@@ -1,0 +1,11 @@
+--- PAGE: / ---
+Meridian Pipeline. The sales engagement platform built for outbound teams. Sequence, dial, and track every touch from one place. Meridian Pipeline gives SDRs a single workspace for email, phone and LinkedIn, and gives their managers the activity data to coach from. Used by outbound teams at over 200 B2B companies. Request a demo. Speak to our sales team today.
+
+--- PAGE: /about ---
+About us. Meridian Pipeline was founded in 2023 in New York. We are a team of 65 people. We raised an 18 million dollar Series A in late 2025 from Halverson Partners. Our customers are business to business software and services companies who run a human outbound motion and have between 10 and 100 sellers.
+
+--- PAGE: /careers ---
+Join Meridian Pipeline. Open positions: Sales Development Manager, New York. Account Executive, Mid-Market, remote United States. Revenue Operations Analyst, New York. Customer Success Manager, London. We are scaling our commercial team this year and every role reports into the revenue organisation.
+
+--- PAGE: /pricing ---
+Pricing. Team and Scale plans. Annual billing. Minimum five seats. Contact our sales team to get started. We do not offer self-serve signup because implementation requires configuration against your CRM.
