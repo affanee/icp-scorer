@@ -89,11 +89,19 @@ That second block is the whole point of the repo.
 
 Run `make eval` and paste your own numbers here. **Do not fill this in with numbers you didn't produce** — a fabricated metric is the one unrecoverable mistake in a portfolio project.
 
-| Rubric version | Accuracy | Precision | Recall | What changed |
+| Rubric version | Companies | Accuracy | Best cut-off | Notes |
 |---|---|---|---|---|
-| v1 | — | — | — | first pass |
-| v2 | — | — | — | |
-| v3 | — | — | — | |
+| v1 — mid-market (50–500) | 34 | not run | — | rubric and labels disagreed with each other; scrapped |
+| v2 — enterprise (1000+) | 35 | **68.6%** | 55 | first measured run. `buying_centre` weighted 2.0, `enterprise_scale` 1.5 |
+
+Run with Gemini (`gemini-3.6-flash`), fit threshold 55. The threshold sweep showed
+accuracy flat at 57.1% for every cut-off below 55, then jumping to 68.6% at 55–65 and
+falling away above 70 — so 55 is a genuine plateau, not a number tuned to flatter the
+result.
+
+68.6% is not good enough to put in front of a rep yet. The next move is to read the
+misclassified accounts and fix the *rubric*, not the code — which is the point of
+having the eval in the first place.
 
 The eval also prints a **threshold sweep** — what accuracy would be at every fit cut-off from 20 to 90 — and the list of misses split into false positives (a rep's time wasted) and false negatives (a good account missed). Those two errors cost different amounts, which is a GTM decision, not a modelling one.
 
