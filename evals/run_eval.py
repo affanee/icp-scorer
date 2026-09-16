@@ -20,6 +20,10 @@ import csv
 import sys
 from pathlib import Path
 
+from dotenv import load_dotenv
+
+load_dotenv()
+
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
 from icp_scorer.config import load_icp           # noqa: E402
@@ -56,6 +60,7 @@ def main() -> int:
     ap.add_argument("--refresh", action="store_true")
     ap.add_argument("--limit", type=int, default=None)
     ap.add_argument("--fixtures", default=None, help="offline page text folder")
+    ap.add_argument("--provider", default="", choices=["", "anthropic", "gemini"])
     args = ap.parse_args()
 
     icp = load_icp(args.rubric)
@@ -81,7 +86,10 @@ def main() -> int:
         domain = row["domain"].strip()
         actual = row["label"].strip().lower() == "fit"
         text = fetch_company_text(domain, refresh=args.refresh, fixtures_dir=args.fixtures)
-        result = score_company(icp, domain, text, mock=args.mock, refresh=args.refresh)
+        result = score_company(
+            icp, domain, text, mock=args.mock, refresh=args.refresh,
+            provider=args.provider,
+        )
         ungrounded_total += result.ungrounded_count
 
         predicted = result.score >= threshold

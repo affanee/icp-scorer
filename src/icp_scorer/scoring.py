@@ -21,6 +21,7 @@ from __future__ import annotations
 import hashlib
 import json
 import os
+import time
 from dataclasses import asdict, dataclass, field
 from pathlib import Path
 
@@ -29,6 +30,11 @@ from .grounding import is_grounded, similarity
 
 DEFAULT_MODEL = os.environ.get("ANTHROPIC_MODEL", "claude-sonnet-4-5")
 TOOL_NAME = "submit_icp_score"
+
+# Which model provider to use. "anthropic" (paid) or "gemini" (has a free tier).
+DEFAULT_PROVIDER = os.environ.get("MODEL_PROVIDER", "anthropic").lower()
+GEMINI_MODEL = os.environ.get("GEMINI_MODEL", "gemini-3.6-flash")
+GEMINI_ENDPOINT = "https://generativelanguage.googleapis.com/v1beta/models"
 
 
 # ── result types ─────────────────────────────────────────────────────────────
@@ -228,6 +234,123 @@ def score_with_claude(icp: ICP, domain: str, page_text: str, model: str = DEFAUL
     raise RuntimeError("Model did not call the scoring tool")
 
 
+
+# ── Gemini: the same job, a different provider ───────────────────────────────
+#
+# Claude guarantees output shape with a forced tool call. Gemini does the same
+# thing with `responseSchema` - you hand it a schema, it returns JSON matching
+# it. Different mechanism, identical guarantee, and the rest of the pipeline
+# (grounding, weighting, tiering) does not care which one produced the payload.
+#
+# That separation is the point: the provider is swappable, the judgment is not.
+
+def build_gemini_schema(icp: ICP) -> dict:
+    """The tool schema, re-expressed in Gemini's OpenAPI-subset dialect.
+
+    Note it has no min/max on `score` - Gemini's schema subset does not support
+    them. That is fine: finalise() clamps every score to 0-3 anyway, because
+    trusting a model to respect its own schema is not a safety model.
+    """
+    keys = [d.key for d in icp.dimensions]
+    return {
+        "type": "OBJECT",
+        "properties": {
+            "dimensions": {
+                "type": "ARRAY",
+                "items": {
+                    "type": "OBJECT",
+                    "properties": {
+                        "key": {"type": "STRING", "enum": keys},
+                        "score": {"type": "INTEGER"},
+                        "evidence": {"type": "STRING"},
+                        "reasoning": {"type": "STRING"},
+                    },
+                    "required": ["key", "score", "evidence", "reasoning"],
+                },
+            },
+            "summary": {"type": "STRING"},
+        },
+        "required": ["dimensions", "summary"],
+    }
+
+
+def list_gemini_models(key: str) -> list:
+    """Used only to make a 'model not found' error actually helpful."""
+    import requests
+
+    try:
+        r = requests.get(GEMINI_ENDPOINT, headers={"x-goog-api-key": key}, timeout=30)
+        return [
+            m["name"].split("/")[-1]
+            for m in r.json().get("models", [])
+            if "generateContent" in m.get("supportedGenerationMethods", [])
+        ]
+    except Exception:  # noqa: BLE001
+        return []
+
+
+def score_with_gemini(icp: ICP, domain: str, page_text: str, model: str = GEMINI_MODEL) -> dict:
+    """Real call against Gemini. Requires GEMINI_API_KEY."""
+    import requests
+
+    key = os.environ.get("GEMINI_API_KEY") or os.environ.get("GOOGLE_API_KEY")
+    if not key:
+        raise RuntimeError("GEMINI_API_KEY is not set. Add it to your .env file.")
+
+    body = {
+        "contents": [{"parts": [{"text": build_prompt(icp, domain, page_text)}]}],
+        "generationConfig": {
+            "responseMimeType": "application/json",
+            "responseSchema": build_gemini_schema(icp),
+            "temperature": 0,
+        },
+    }
+    # The free tier throttles aggressively. A 429 is not an error condition,
+    # it is the API telling you to slow down - so back off and try again
+    # rather than losing the row. This is the single most common reason a
+    # batch job "half works" and nobody notices.
+    backoffs = [5, 15, 40]
+    for attempt in range(len(backoffs) + 1):
+        r = requests.post(
+            GEMINI_ENDPOINT + "/" + model + ":generateContent",
+            json=body,
+            headers={"x-goog-api-key": key},
+            timeout=90,
+        )
+        if r.status_code != 429:
+            break
+        if attempt == len(backoffs):
+            raise RuntimeError("Gemini rate limit: still throttled after 3 retries.")
+        wait = backoffs[attempt]
+        print("    rate limited, waiting " + str(wait) + "s...", flush=True)
+        time.sleep(wait)
+
+    # Surface the API's OWN error text. An earlier version of this function
+    # printed a guessed explanation ("model not found") while Google was in
+    # fact saying "that model is retired, use this one instead" - and the
+    # useful sentence was sitting unread in the response body. Never paraphrase
+    # an upstream error you can just quote.
+    if r.status_code != 200:
+        try:
+            upstream = r.json().get("error", {}).get("message", "")
+        except ValueError:
+            upstream = r.text[:300]
+        if r.status_code == 404:
+            available = list_gemini_models(key)
+            hint = ", ".join(available[:6]) if available else "could not list models"
+            upstream += "  [available: " + hint + "]"
+        if r.status_code in (401, 403):
+            upstream += "  [check GEMINI_API_KEY in your .env]"
+        raise RuntimeError("Gemini " + str(r.status_code) + ": " + upstream)
+
+    data = r.json()
+    try:
+        text = data["candidates"][0]["content"]["parts"][0]["text"]
+    except (KeyError, IndexError):
+        raise RuntimeError("Unexpected Gemini response: " + str(data)[:200]) from None
+    return json.loads(text)
+
+
 def score_mock(icp: ICP, domain: str, page_text: str) -> dict:
     """Deterministic fake scorer so the whole pipeline runs with no API key.
 
@@ -258,9 +381,11 @@ def score_mock(icp: ICP, domain: str, page_text: str) -> dict:
 
 # ── caching ──────────────────────────────────────────────────────────────────
 
-def cache_path(cache_dir: str | Path, domain: str, icp: ICP, mock: bool) -> Path:
+def cache_path(
+    cache_dir: str | Path, domain: str, icp: ICP, mock: bool, provider: str = "anthropic"
+) -> Path:
     """Cache key includes the rubric fingerprint, so editing icp.yaml re-scores."""
-    tag = "mock" if mock else "live"
+    tag = "mock" if mock else provider
     return Path(cache_dir) / f"{domain}__{icp.fingerprint()}__{tag}.json"
 
 
@@ -271,18 +396,27 @@ def score_company(
     cache_dir: str | Path = ".cache/scores",
     mock: bool = False,
     refresh: bool = False,
-    model: str = DEFAULT_MODEL,
+    model: str = "",
+    provider: str = "",
 ) -> CompanyResult:
-    path = cache_path(cache_dir, domain, icp, mock)
+    provider = (provider or DEFAULT_PROVIDER).lower()
+    path = cache_path(cache_dir, domain, icp, mock, provider)
     path.parent.mkdir(parents=True, exist_ok=True)
 
     if path.exists() and not refresh:
         payload = json.loads(path.read_text(encoding="utf-8"))
     else:
         try:
-            payload = score_mock(icp, domain, page_text) if mock else score_with_claude(
-                icp, domain, page_text, model=model
-            )
+            if mock:
+                payload = score_mock(icp, domain, page_text)
+            elif provider == "gemini":
+                payload = score_with_gemini(icp, domain, page_text, model or GEMINI_MODEL)
+            elif provider == "anthropic":
+                payload = score_with_claude(icp, domain, page_text, model or DEFAULT_MODEL)
+            else:
+                raise ValueError(
+                    "Unknown MODEL_PROVIDER: " + provider + ". Use anthropic or gemini."
+                )
         except Exception as exc:  # noqa: BLE001 - one bad domain must not kill the run
             return CompanyResult(domain=domain, score=0.0, tier="C", error=str(exc)[:200])
         path.write_text(json.dumps(payload, indent=2), encoding="utf-8")

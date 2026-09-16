@@ -1,5 +1,5 @@
 # ─────────────────────────────────────────────────────────────────────────────
-# THE ICP RUBRIC
+# THE ICP RUBRIC  —  ENTERPRISE
 #
 # This file is the whole point of the project. Everything else is plumbing.
 # You are encoding *your* judgment about what a good-fit account looks like,
@@ -7,17 +7,21 @@
 #
 # Edit this freely. When you change it, the cache invalidates automatically
 # (scores are keyed by a fingerprint of this file), so you can A/B rubrics.
+#
+# A mid-market version of this rubric is kept at icp.yaml.midmarket.bak.
 # ─────────────────────────────────────────────────────────────────────────────
 
-name: "B2B SaaS, 50-500 employees, sells to revenue teams, runs outbound"
+name: "Enterprise B2B SaaS, 1000+ employees, sells to revenue teams, committee-led sales cycle"
 
 description: >
-  We sell tooling to sales and marketing organisations. Our best customers are
-  software companies past product-market fit but before enterprise bureaucracy:
-  they have a real outbound motion, a named RevOps or GTM function, and enough
-  headcount that manual processes have started to hurt. Companies that grow
-  purely through product-led self-serve are a poor fit even when they are large,
-  because there is no sales team to sell into.
+  We sell into large revenue organisations. Our best customers are established
+  B2B software companies with a thousand or more employees, a named CRO or
+  Chief Revenue Officer, and a sales motion run by committee: named accounts,
+  solution engineers, security reviews and procurement. The buying centre is
+  sales, marketing or revenue operations — not IT, not finance, not developers.
+  Size alone is not enough. A twenty-thousand-person company that sells to
+  engineers is a bad account no matter how big it is, and that distinction is
+  the one this rubric has to get right.
 
 # Each dimension is scored 0-3 by the model, and must be justified with a
 # verbatim quote from the company's own website. No quote, no points.
@@ -33,51 +37,53 @@ dimensions:
       "1": "Mixed B2B/B2C, or the buyer is ambiguous."
       "0": "Consumer, non-profit, government, or not a company at all."
 
-  - key: size_signal
-    weight: 1.0
+  - key: buying_centre
+    weight: 2.0   # the heaviest dimension: WHO they sell to decides fit, not size
     question: >
-      Does the site suggest roughly 50-500 employees? Look for team pages,
-      office counts, customer logos, funding stage language, or the number and
-      seniority of open roles.
+      Does this company sell to sales, marketing or revenue operations teams?
+      Look at who the product is pitched at, the job titles in customer quotes,
+      the use cases on the homepage, and the language on the pricing page.
     guidance:
-      "3": "Strong evidence of 50-500: Series A-C language, sizeable team page, several open roles."
-      "2": "Plausibly in range but the evidence is indirect."
-      "1": "Looks clearly smaller (under ~20) or clearly larger (enterprise, thousands of staff)."
+      "3": "Explicitly sold to sales, marketing, RevOps or a CRO. Revenue teams are the named buyer."
+      "2": "Revenue-adjacent — customer success, partnerships, or a horizontal product with a clear GTM use case."
+      "1": "Sold to some other function: IT, security, finance, HR, engineering."
+      "0": "Sold to developers or to consumers. Wrong buying centre entirely."
+
+  - key: enterprise_scale
+    weight: 1.5
+    question: >
+      Does the site suggest 1000+ employees? Look for multiple global offices,
+      publicly traded or late-stage language, named enterprise customer logos,
+      analyst recognition (Gartner, Forrester), and the breadth of open roles.
+    guidance:
+      "3": "Unambiguously large: global offices, public company or very late stage, Fortune-500 logos, analyst placements."
+      "2": "Large but the evidence is indirect, or it reads like several hundred rather than thousands."
+      "1": "Clearly mid-market or smaller — a single office, a small team page, under a few hundred staff."
       "0": "No usable size signal anywhere on the site."
 
-  - key: gtm_motion
-    weight: 1.5   # weighted higher: this is the dimension that actually predicts fit
+  - key: procurement_maturity
+    weight: 1.0
     question: >
-      Is there evidence of a human sales motion - outbound, SDRs, AEs, a
-      "Book a demo" or "Talk to sales" path, or open sales roles?
+      Is there evidence of an enterprise procurement surface — a trust or
+      security centre, SOC 2 or ISO certification, a DPA or legal page,
+      published SLAs, SSO and SAML support, or a dedicated enterprise tier?
     guidance:
-      "3": "Explicit sales motion: sales roles open, 'Talk to sales' as the primary CTA, or a named sales team."
-      "2": "Some sales motion, but self-serve signup is the main path."
-      "1": "Almost entirely product-led. Pricing page ends in 'Sign up free'."
-      "0": "No discernible sales motion at all."
+      "3": "Full enterprise surface: trust centre, named certifications, SSO/SAML, enterprise tier."
+      "2": "Some of it — a security page or an enterprise plan, but thin."
+      "1": "Minimal. Self-serve signup with no compliance or security story."
+      "0": "Nothing of the kind anywhere on the site."
 
   - key: buying_trigger
     weight: 1.0
     question: >
-      Is there a live trigger suggesting they are building or scaling revenue
-      operations right now? Recent funding, hiring for RevOps/GTM/Sales Ops,
-      a new sales leader, or expansion into a new market.
+      Is there a live trigger suggesting they are rebuilding or scaling revenue
+      operations right now? A new CRO, RevOps or GTM systems hiring, an
+      acquisition, or expansion into a new market or segment.
     guidance:
-      "3": "Explicit, dated trigger: an open RevOps/GTM role, a funding announcement, a new CRO."
-      "2": "A softer trigger: general sales hiring, a new region, a new product line."
+      "3": "Explicit, dated trigger: an open RevOps/GTM systems role, a new CRO, an announced acquisition."
+      "2": "A softer trigger: general revenue-team hiring, a new region, a new product line."
       "1": "Nothing current, but the company is clearly active."
       "0": "Site looks dormant or unmaintained."
-
-  - key: geography
-    weight: 0.5   # weighted low: nice to have, rarely the deciding factor
-    question: >
-      Is the company headquartered in or selling primarily to North America,
-      the UK, or Western Europe?
-    guidance:
-      "3": "Clearly HQ'd or primarily selling in those markets."
-      "2": "Global with meaningful presence in those markets."
-      "1": "Primarily elsewhere but some presence."
-      "0": "No presence in target markets."
 
 # Weighted total is normalised to 0-100 before tiering, so you can reweight
 # dimensions without re-tuning these numbers.

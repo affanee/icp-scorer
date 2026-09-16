@@ -15,3 +15,8 @@ venv/
 
 # OS
 .DS_Store
+
+# Scratch and backups — never belong in the repo
+*.bak
+diag.py
+evals/labels.midmarket.bak.csv

@@ -39,6 +39,7 @@ def run(
     refresh: bool = False,
     limit: int | None = None,
     fixtures_dir: str | None = None,
+    provider: str = "",
 ) -> list[CompanyResult]:
     domains = read_domains(input_path)
     if limit:
@@ -48,7 +49,9 @@ def run(
     for i, domain in enumerate(domains, 1):
         print(f"[{i}/{len(domains)}] {domain}", end=" ", flush=True)
         text = fetch_company_text(domain, refresh=refresh, fixtures_dir=fixtures_dir)
-        result = score_company(icp, domain, text, mock=mock, refresh=refresh)
+        result = score_company(
+            icp, domain, text, mock=mock, refresh=refresh, provider=provider
+        )
         results.append(result)
         if result.error:
             print(f"ERROR: {result.error}")

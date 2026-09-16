@@ -4,7 +4,7 @@ Score B2B accounts against a written ICP rubric using Claude — then **measure 
 
 Everybody builds a lead scorer. Almost nobody checks if it's right. This repo does both, and refuses to award points for evidence the model made up.
 
-![tests](https://github.com/YOUR_USERNAME/icp-scorer/actions/workflows/tests.yml/badge.svg)
+![tests](https://github.com/affanee/icp-scorer/actions/workflows/tests.yml/badge.svg)
 
 ---
 

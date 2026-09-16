@@ -107,7 +107,7 @@ git add .
 git status
 git commit -m "ICP scorer with grounding checks and an eval harness"
 git branch -M main
-git remote add origin https://github.com/YOUR_USERNAME/icp-scorer.git
+git remote add origin https://github.com/affanee/icp-scorer.git
 git push -u origin main
 ```
 
@@ -133,7 +133,7 @@ People read commit history in interviews.
 
 The code is done. These four things are what turn it into a portfolio piece.
 
-1. **Replace `YOUR_USERNAME`** in `README.md` (badge URL) and `src/icp_scorer/fetch.py`
+1. **Replace the GitHub username placeholders** in `README.md` (badge URL) and `src/icp_scorer/fetch.py`
    (the user-agent string) with your GitHub handle.
 
 2. **Run `make eval` and fill in the results table** in the README with your real

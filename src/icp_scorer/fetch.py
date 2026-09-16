@@ -21,7 +21,7 @@ import requests
 CANDIDATE_PATHS = ["", "/about", "/about-us", "/company", "/careers", "/jobs", "/pricing"]
 MAX_PATHS_TO_KEEP = 4
 DEFAULT_MAX_CHARS = 14_000
-USER_AGENT = "icp-scorer/0.1 (+https://github.com/YOUR_USERNAME/icp-scorer)"
+USER_AGENT = "icp-scorer/0.1 (+https://github.com/affanee/icp-scorer)"
 
 try:  # optional, much better extraction when present
     import trafilatura  # type: ignore

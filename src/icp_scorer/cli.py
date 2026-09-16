@@ -10,6 +10,10 @@ from __future__ import annotations
 import argparse
 import sys
 
+from dotenv import load_dotenv
+
+load_dotenv()  # read .env so API keys work without exporting them
+
 from .config import load_icp
 from .fetch import clean_domain, fetch_company_text
 from .pipeline import run
@@ -19,6 +23,12 @@ from .scoring import score_company
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(prog="icp-scorer", description=__doc__)
     parser.add_argument("--rubric", default="icp.yaml", help="path to the ICP rubric")
+    parser.add_argument(
+        "--provider",
+        default="",
+        choices=["", "anthropic", "gemini"],
+        help="which model to score with (default: MODEL_PROVIDER in .env)",
+    )
     sub = parser.add_subparsers(dest="command", required=True)
 
     p_score = sub.add_parser("score", help="score a CSV of domains")
@@ -53,6 +63,7 @@ def main(argv: list[str] | None = None) -> int:
             refresh=args.refresh,
             limit=args.limit,
             fixtures_dir=args.fixtures,
+            provider=args.provider,
         )
         return 0
 
@@ -62,7 +73,10 @@ def main(argv: list[str] | None = None) -> int:
         if not text:
             print(f"Could not retrieve any page text for {domain}")
             return 1
-        result = score_company(icp, domain, text, mock=args.mock, refresh=args.refresh)
+        result = score_company(
+            icp, domain, text, mock=args.mock, refresh=args.refresh,
+            provider=args.provider,
+        )
         if result.error:
             print(f"ERROR: {result.error}")
             return 1
